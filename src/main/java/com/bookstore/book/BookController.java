@@ -1,7 +1,8 @@
 package com.bookstore.book;
 
+import com.bookstore.book.base.BookDetails;
+import com.bookstore.book.base.BookInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,12 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getBooks(){
+    public List<BookInfo> getBooks(){
         return bookService.getBooks();
     }
 
     @PostMapping
-    public void registerNewBook(@RequestBody Book book){
-        bookService.addNewBook(book);
+    public void registerNewBook(@RequestBody BookInfo bookInfo){
+        bookService.addNewBook(bookInfo);
     }
 }

@@ -1,5 +1,7 @@
 package com.bookstore.book;
 
+import com.bookstore.book.base.BookDetails;
+import com.bookstore.book.base.BookInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +16,11 @@ public class BookService {
     public BookService(BookRepository bookRepository){
         this.bookRepository = bookRepository;
     }
-    public List<Book> getBooks() {
+    public List<BookInfo> getBooks() {
         return bookRepository.findAll();
     }
 
-    public void addNewBook(Book book) {
-        System.out.println(book);
+    public void addNewBook(BookInfo bookInfo) {
+        System.out.println(bookInfo);
     }
 }
