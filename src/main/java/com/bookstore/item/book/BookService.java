@@ -1,4 +1,4 @@
-package com.bookstore.book;
+package com.bookstore.item.book;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,5 +20,9 @@ public class BookService {
 
     public void addNewBook(Book book) {
         System.out.println(book);
+    }
+
+    public BookDTO getBookByISBN(String itemID) {
+        return null;
     }
 }

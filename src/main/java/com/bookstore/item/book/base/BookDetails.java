@@ -1,6 +1,6 @@
-package com.bookstore.book.base;
+package com.bookstore.item.book.base;
 
-import com.bookstore.book.Genre;
+import com.bookstore.item.book.Genre;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.bookstore.book;
+package com.bookstore.item.book;
 
 import jakarta.persistence.*;
 import lombok.Getter;

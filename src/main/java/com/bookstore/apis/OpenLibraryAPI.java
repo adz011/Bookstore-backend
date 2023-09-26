@@ -1,6 +1,6 @@
 package com.bookstore.apis;
 
-import com.bookstore.book.base.BookInfo;
+import com.bookstore.item.book.base.BookInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

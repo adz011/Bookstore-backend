@@ -1,4 +1,4 @@
-package com.bookstore.book.base;
+package com.bookstore.item.book.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
