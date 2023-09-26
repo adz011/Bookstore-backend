@@ -1,49 +1,69 @@
 package com.bookstore.item.book;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
-@Entity
-@Table
+
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book {
-    @Id
-    @SequenceGenerator(
-            name= "book_sequence",
-            sequenceName = "book_sequence",
-            allocationSize = 1
-    )
-
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "book_sequence"
-    )
-    private long id;
-    private String ISBN;
     private String title;
-    private String author;
+    private List<String> authors;
     private String publisher;
-    private LocalDate publicationDate;
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
-    int numberOfPages;
+    private String publishedDate;
+    private String description;
+    private List<IndustryIdentifier> industryIdentifiers;
+    private Map<String, Boolean> readingModes;
+    private int pageCount;
+    private String printType;
+    private List<String> categories;
+    private String maturityRating;
+    private boolean allowAnonLogging;
+    private String contentVersion;
+    private PanelizationSummary panelizationSummary;
+    private ImageLinks imageLinks;
+    private String language;
+    private String previewLink;
+    private String infoLink;
+    private String canonicalVolumeLink;
 
-    public Book(String ISBN, String title, String author, String publisher, LocalDate publicationDate, Genre genre, int numberOfPages) {
-        this.ISBN = ISBN;
-        this.title = title;
-        this.author = author;
-        this.publisher = publisher;
-        this.publicationDate = publicationDate;
-        this.genre = genre;
-        this.numberOfPages = numberOfPages;
+
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    public static class IndustryIdentifier {
+        private String type;
+        private String identifier;
+
+
     }
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    public static class PanelizationSummary {
+        private boolean containsEpubBubbles;
+        private boolean containsImageBubbles;
 
+        // Getter and setter methods for containsEpubBubbles and containsImageBubbles
+
+        // ...
+    }
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    public static class ImageLinks {
+        private String smallThumbnail;
+        private String thumbnail;
+
+        // Getter and setter methods for smallThumbnail and thumbnail
+
+        // ...
+    }
     public Book() {
 
     }

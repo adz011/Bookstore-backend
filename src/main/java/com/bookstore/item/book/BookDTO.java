@@ -2,15 +2,27 @@ package com.bookstore.item.book;
 
 import com.bookstore.item.ItemDTO;
 import com.bookstore.item.ItemType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class BookDTO extends ItemDTO {
 
     String title;
+    List<String> authors;
+    String publisher;
 
-    public BookDTO(long ID, String itemID, ItemType itemType) {
-        super(ID, itemID, itemType);
+    public BookDTO(long id, String itemID, ItemType itemType, String title, List<String> authors, String publisher) {
+        super.setID(id);
+        super.setItemID(itemID);
+        super.setItemType(itemType);
+        this.title = title;
+        this.authors = authors;
+        this.publisher = publisher;
     }
 }

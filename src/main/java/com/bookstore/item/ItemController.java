@@ -1,6 +1,5 @@
 package com.bookstore.item;
 
-import com.bookstore.item.book.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +22,7 @@ public class ItemController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createTrip(@RequestBody ItemDTO itemDTO) {
-        itemService.createTrip(itemDTO);
+        itemService.createItem(itemDTO);
         return ResponseEntity.ok().build();
     }
 }
