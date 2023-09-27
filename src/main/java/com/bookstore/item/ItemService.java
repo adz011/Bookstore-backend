@@ -1,10 +1,9 @@
 package com.bookstore.item;
 
 import com.bookstore.item.book.Book;
-import com.bookstore.item.book.BookDTO;
 import com.bookstore.item.book.BookMapper;
 import com.bookstore.item.book.BookService;
-import com.bookstore.item.book.base.BookNotFoundException;
+import com.bookstore.item.book.BookNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

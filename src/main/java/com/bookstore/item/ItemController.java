@@ -1,9 +1,8 @@
 package com.bookstore.item;
 
-import com.bookstore.item.book.base.BookNotFoundException;
+import com.bookstore.item.book.BookNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
