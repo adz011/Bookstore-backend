@@ -17,8 +17,7 @@ public class BookDTO extends ItemDTO {
     List<String> authors;
     String publisher;
 
-    public BookDTO(long id, String itemID, ItemType itemType, String title, List<String> authors, String publisher) {
-        super.setID(id);
+    public BookDTO(String itemID, ItemType itemType, String title, List<String> authors, String publisher) {
         super.setItemID(itemID);
         super.setItemType(itemType);
         this.title = title;

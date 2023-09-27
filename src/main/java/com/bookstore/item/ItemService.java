@@ -4,6 +4,7 @@ import com.bookstore.item.book.Book;
 import com.bookstore.item.book.BookDTO;
 import com.bookstore.item.book.BookMapper;
 import com.bookstore.item.book.BookService;
+import com.bookstore.item.book.base.BookNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,27 +24,30 @@ public class ItemService {
 
     private final ItemMapper itemMapper = new ItemMapper();
 
-    public ItemDTO getItem(long id) {
-        Optional<Item> item = itemRepository.findByID(id);
-        ItemDTO itemDTO = null;
-        if (item.isPresent()) {
-            itemDTO = itemMapper.mapToItemDTO(item.get());
-            System.out.println(itemDTO);
-            if (item.get().getType() == ItemType.Book) {
-                try {
-                    Book book = bookService.getBookByISBN(item.get().getItemID());
-                    System.out.println(bookMapper.mapToDTO(itemDTO, book));
-                    itemDTO = bookMapper.mapToDTO(itemDTO, book);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }
+    public ItemDTO getItem(long id) throws ItemNotFoundException, BookNotFoundException, JsonProcessingException {
+        Item item = itemRepository.findByID(id).orElseThrow(ItemNotFoundException::new);
+        ItemDTO itemDTO = itemMapper.mapToItemDTO(item);
+        if (item.getType() == ItemType.Book) {
+            Book book = bookService.getBookByISBN(item.getItemID());
+            System.out.println(bookMapper.mapToDTO(itemDTO, book));
+            itemDTO = bookMapper.mapToDTO(itemDTO, book);
         }
+
         return itemDTO;
     }
 
-    public void createItem(ItemDTO itemDTO) {
-        itemRepository.save(itemMapper.mapToItem(itemDTO));
+
+    public void createItem(Item item) {
+        itemRepository.save(item);
+    }
+
+    public void updateItem(Item updatedItem) {
+        Optional<Item> outdatedItem = itemRepository.findByID(updatedItem.getID());
+        outdatedItem.ifPresent(value -> itemRepository.save(updatedItem));
+
+    }
+
+    public void deleteItem(long id) {
+        itemRepository.deleteById(id);
     }
 }

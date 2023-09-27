@@ -1,6 +1,7 @@
 package com.bookstore.item.book;
 
 import com.bookstore.apis.GoogleBooksAPI;
+import com.bookstore.item.book.base.BookNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,13 @@ public class BookService {
         System.out.println(book);
     }
 
-    public Book getBookByISBN(String itemID) throws JsonProcessingException {
-        String book = googleBooksAPI.getBookByISBN(itemID, "");
+    public Book getBookByISBN(String itemID) throws JsonProcessingException, BookNotFoundException {
+        String book = googleBooksAPI.getBookByISBN(itemID, "AIzaSyAocUxh0hB7t9bEPFwzrNizKbFcs4S8HSs");
         // Create jsonObject of the received api data
         JsonObject jsonObject = JsonParser.parseString(book).getAsJsonObject();
-
+        if(jsonObject.get("totalItems").getAsInt() <= 0){
+            throw new BookNotFoundException();
+        }
         // Navigate to the "volumeInfo" object
         JsonObject volumeInfo = jsonObject.getAsJsonArray("items")
                 .get(0)

@@ -17,4 +17,9 @@ public class Item {
     private String itemID;
     @Enumerated(EnumType.STRING)
     private ItemType type;
+
+    public Item(String itemID, ItemType type) {
+        this.itemID = itemID;
+        this.type = type;
+    }
 }
