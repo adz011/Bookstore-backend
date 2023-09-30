@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue
@@ -40,6 +40,7 @@ public class User implements UserDetails {
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.role = role;
