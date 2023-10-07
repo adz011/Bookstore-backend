@@ -1,5 +1,6 @@
 package com.bookstore.auth;
 
+import com.bookstore.exceptions.UserAlreadyExistsException;
 import com.bookstore.security.JwtService;
 import com.bookstore.user.User;
 import com.bookstore.user.UserRepository;
@@ -18,9 +19,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) throws Exception {
+    public AuthenticationResponse register(RegisterRequest request) {
         if (userRepository.findUserByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalStateException("User with given email already exists");
+            throw new UserAlreadyExistsException("User with given credentials already exists");
         }
         User user = User
                 .builder()
@@ -48,7 +49,7 @@ public class AuthenticationService {
         ));
         User user = userRepository
                 .findUserByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("The user with given email does not exist"));
+                .orElseThrow(() -> new UsernameNotFoundException("Bad credentials"));
         String jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse

@@ -1,7 +1,11 @@
 package com.bookstore.auth;
 
+import com.bookstore.exceptions.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,16 +18,28 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> registerUser(
+    public ResponseEntity<?> registerUser(
             @RequestBody RegisterRequest request
-    ) throws Exception {
-        return ResponseEntity.ok(authenticationService.register(request));
+    ) {
+        try {
+            AuthenticationResponse authenticationResponse = authenticationService.register(request);
+            return ResponseEntity.ok(authenticationResponse);
+        } catch (UserAlreadyExistsException e) {
+            String errorMessage = e.getMessage();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
+        }
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticateUser(
+    public ResponseEntity<?> authenticateUser(
             @RequestBody AuthenticationRequest request
-    ){
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+    ) {
+        try {
+            AuthenticationResponse authenticationResponse = authenticationService.authenticate(request);
+            return ResponseEntity.ok(authenticationResponse);
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
+            String errorMessage = e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
     }
 }
