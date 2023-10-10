@@ -16,15 +16,5 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) throws NoUserFoundException {
-        userService.register(user);
-        return ResponseEntity.ok().body(userService.login(user));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) throws NoUserFoundException {
-        return ResponseEntity.ok().body(userService.login(user));
-    }
 
 }
