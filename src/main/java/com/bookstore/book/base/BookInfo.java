@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Table
+@Entity
 @Getter
 @Setter
 @ToString
@@ -24,12 +25,12 @@ public class BookInfo {
             strategy = GenerationType.SEQUENCE,
             generator = "book_sequence"
     )
-    BookDetails details;
+    //BookDetails details;
     String bib_key;
     String thumbnail_url;
 
     public BookInfo(BookDetails details, String bib_key, String thumbnail_url) {
-        this.details = details;
+        //this.details = details;
         this.bib_key = bib_key;
         this.thumbnail_url = thumbnail_url;
     }
