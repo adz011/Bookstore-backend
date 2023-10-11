@@ -13,6 +13,7 @@ import lombok.*;
 public class Item {
 
     @Id
+    @GeneratedValue
     private long ID;
     private String itemID;
     @Enumerated(EnumType.STRING)
