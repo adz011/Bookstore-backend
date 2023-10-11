@@ -8,9 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
-@RequestMapping("/api/items")
+@RequestMapping("/api/v1/items")
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -18,9 +20,8 @@ public class ItemController {
     private ItemService itemService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ItemDTO> createItem(@RequestBody Item item) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-        itemService.createItem(item);
-        return ResponseEntity.ok().body(itemService.getItem(item.getID()));
+    public ResponseEntity<ItemDTO> createItem(@RequestBody ItemDTO itemDTO) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+        return ResponseEntity.ok().body(itemService.createItem(itemDTO));
     }
 
     @GetMapping("/{id}")
@@ -38,5 +39,10 @@ public class ItemController {
     public ResponseEntity<Void> deleteItem(@PathVariable("id") long id){
         itemService.deleteItem(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Item>> getItems(){
+        return ResponseEntity.ok().body(itemService.getItems(12));
     }
 }

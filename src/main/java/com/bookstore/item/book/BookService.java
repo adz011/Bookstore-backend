@@ -20,7 +20,7 @@ public class BookService {
     }
 
     public Book getBookByISBN(String itemID) throws JsonProcessingException, BookNotFoundException {
-        String book = googleBooksAPI.getBookByISBN(itemID, "");
+        String book = googleBooksAPI.getBookByISBN(itemID, "AIzaSyAocUxh0hB7t9bEPFwzrNizKbFcs4S8HSs");
         // Create jsonObject of the received api data
         JsonObject jsonObject = JsonParser.parseString(book).getAsJsonObject();
         if(jsonObject.get("totalItems").getAsInt() <= 0){

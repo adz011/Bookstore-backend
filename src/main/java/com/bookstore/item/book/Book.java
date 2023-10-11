@@ -53,17 +53,6 @@ public class Book {
 
         // ...
     }
-    @NoArgsConstructor
-    @Getter
-    @Setter
-    public static class ImageLinks {
-        private String smallThumbnail;
-        private String thumbnail;
-
-        // Getter and setter methods for smallThumbnail and thumbnail
-
-        // ...
-    }
     public Book() {
 
     }

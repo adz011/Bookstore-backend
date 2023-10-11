@@ -8,7 +8,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -36,8 +38,9 @@ public class ItemService {
     }
 
 
-    public void createItem(Item item) {
-        itemRepository.save(item);
+    public ItemDTO createItem(ItemDTO itemDTO) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+        Item item = itemRepository.save(itemMapper.mapToItem(itemDTO));
+        return getItem(item.getID());
     }
 
     public void updateItem(Item updatedItem) {
@@ -48,5 +51,9 @@ public class ItemService {
 
     public void deleteItem(long id) {
         itemRepository.deleteById(id);
+    }
+
+    public List<Item> getItems(long quantity){
+        return itemRepository.findAll().stream().limit(quantity).collect(Collectors.toList());
     }
 }
