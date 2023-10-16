@@ -2,6 +2,7 @@ package com.bookstore.auction;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +23,12 @@ public class AuctionService {
         auctionRepository.save(auction);
     }
 
-    public List<Auction> getAllAuctions() {
-        return auctionRepository.findAll();
+    public List<Auction> getAllAuctions() throws AuctionNotFoundException {
+        List<Auction> auctionList = auctionRepository.findAll().stream().toList();
+        if (auctionList.size() == 0) {
+            throw new AuctionNotFoundException();
+        }
+        return auctionList;
     }
 
     public Auction getById(Long id) throws AuctionNotFoundException {
@@ -32,13 +38,23 @@ public class AuctionService {
     public List<Auction> getAuctionsSortedPriceDescending(int page, int pageSize) throws AuctionNotFoundException {
         //Page operation is done due to site not starting at page 0
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        return auctionRepository.findAllByPriceDescending(pageable).stream().toList();
+        Page<Auction> auctions = auctionRepository.findAllByPriceDescending(pageable).orElseThrow(AuctionNotFoundException::new);
+        List<Auction> auctionList = auctions.stream().toList();
+        if (auctionList.size() == 0) {
+            throw new AuctionNotFoundException();
+        }
+        return auctionList;
     }
 
     public List<Auction> getAuctionsSortedPriceAscending(int page, int pageSize) throws AuctionNotFoundException {
         //Page operation is done due to site not starting at page 0
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        return auctionRepository.findAllByPriceAscending(pageable).stream().toList();
+        Page<Auction> auctions = auctionRepository.findAllByPriceAscending(pageable).orElseThrow(AuctionNotFoundException::new);
+        List<Auction> auctionList = auctions.stream().toList();
+        if (auctionList.size() == 0) {
+            throw new AuctionNotFoundException();
+        }
+        return auctionList;
     }
 
     @Transactional

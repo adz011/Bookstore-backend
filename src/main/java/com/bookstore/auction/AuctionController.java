@@ -25,7 +25,7 @@ public class AuctionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Auction>> getAllAuctions() {
+    public ResponseEntity<List<Auction>> getAllAuctions() throws AuctionNotFoundException {
         return ResponseEntity.ok(auctionService.getAllAuctions());
     }
 

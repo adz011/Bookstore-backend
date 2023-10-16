@@ -15,8 +15,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     Optional<Auction> findAuctionById(Long id);
 
     @Query("SELECT a FROM Auction a ORDER BY a.price DESC")
-    Page<Auction> findAllByPriceDescending(Pageable pageable);
+    Optional<Page<Auction>> findAllByPriceDescending(Pageable pageable);
 
     @Query("SELECT a FROM Auction a ORDER BY a.price ASC")
-    Page<Auction> findAllByPriceAscending(Pageable pageable);
+    Optional<Page<Auction>> findAllByPriceAscending(Pageable pageable);
 }
