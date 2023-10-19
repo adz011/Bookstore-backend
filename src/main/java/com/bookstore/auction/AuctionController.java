@@ -1,5 +1,8 @@
 package com.bookstore.auction;
 
+import com.bookstore.item.ItemNotFoundException;
+import com.bookstore.item.book.BookNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +13,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/auction")
+@RequestMapping("api/v1/auctions")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class AuctionController {
     @Autowired
     private final AuctionService auctionService;
@@ -19,7 +23,7 @@ public class AuctionController {
     @PostMapping
     public ResponseEntity<String> createAuction(
             @RequestBody Auction auction
-    ) {
+    ) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         auctionService.createAuction(auction);
         return ResponseEntity.ok("Auction was created successfully");
     }
@@ -37,18 +41,18 @@ public class AuctionController {
     }
 
     @GetMapping(path = "/price/descending", params = {"page", "pageSize"})
-    public ResponseEntity<List<Auction>> getSortedPriceDescending(
+    public ResponseEntity<List<AuctionDTO>> getSortedPriceDescending(
             @RequestParam("page") int page,
             @RequestParam("pageSize") int pageSize
-    ) throws AuctionNotFoundException {
+    ) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         return ResponseEntity.ok(auctionService.getAuctionsSortedPriceDescending(page, pageSize));
     }
 
     @GetMapping(path = "/price/ascending", params = {"page", "pageSize"})
-    public ResponseEntity<List<Auction>> getSortedPriceAscending(
+    public ResponseEntity<List<AuctionDTO>> getSortedPriceAscending(
             @RequestParam("page") int page,
             @RequestParam("pageSize") int pageSize
-    ) throws AuctionNotFoundException {
+    ) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         return ResponseEntity.ok(auctionService.getAuctionsSortedPriceAscending(page, pageSize));
     }
 
@@ -57,7 +61,7 @@ public class AuctionController {
     public ResponseEntity<String> updateAuction(
             @RequestParam Long id,
             @RequestParam(required = false) String ownerEmail,
-            @RequestParam(required = false) Long itemId,
+            @RequestParam(required = false) String itemId,
             @RequestParam(required = false) LocalDate endDate,
             @RequestParam(required = false) BigDecimal price
     ) throws AuctionNotFoundException {

@@ -1,5 +1,11 @@
 package com.bookstore.auction;
 
+import com.bookstore.item.ItemDTO;
+import com.bookstore.item.ItemNotFoundException;
+import com.bookstore.item.ItemService;
+import com.bookstore.item.ItemType;
+import com.bookstore.item.book.BookNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +25,15 @@ public class AuctionService {
     @Autowired
     private final AuctionRepository auctionRepository;
 
-    public void createAuction(Auction auction) {
+    private final AuctionMapper auctionMapper = new AuctionMapper();
+
+    @Autowired
+
+    private final ItemService itemService;
+
+    public void createAuction(Auction auction) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         auctionRepository.save(auction);
+        itemService.createItem(new ItemDTO(auction.getItemId(), ItemType.Book));
     }
 
     public List<Auction> getAllAuctions() throws AuctionNotFoundException {
@@ -35,33 +48,39 @@ public class AuctionService {
         return auctionRepository.findAuctionById(id).orElseThrow(AuctionNotFoundException::new);
     }
 
-    public List<Auction> getAuctionsSortedPriceDescending(int page, int pageSize) throws AuctionNotFoundException {
+    public List<AuctionDTO> getAuctionsSortedPriceDescending(int page, int pageSize) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         //Page operation is done due to site not starting at page 0
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Auction> auctions = auctionRepository.findAllByPriceDescending(pageable).orElseThrow(AuctionNotFoundException::new);
-        List<Auction> auctionList = auctions.stream().toList();
-        if (auctionList.size() == 0) {
-            throw new AuctionNotFoundException();
-        }
-        return auctionList;
+        return  convertToDTOS(auctions);
+
     }
 
-    public List<Auction> getAuctionsSortedPriceAscending(int page, int pageSize) throws AuctionNotFoundException {
+    public List<AuctionDTO> getAuctionsSortedPriceAscending(int page, int pageSize) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         //Page operation is done due to site not starting at page 0
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Auction> auctions = auctionRepository.findAllByPriceAscending(pageable).orElseThrow(AuctionNotFoundException::new);
+        return  convertToDTOS(auctions);
+    }
+
+    private List<AuctionDTO> convertToDTOS(Page<Auction> auctions) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         List<Auction> auctionList = auctions.stream().toList();
+        List<AuctionDTO> auctionDTOS = new ArrayList<>();
         if (auctionList.size() == 0) {
             throw new AuctionNotFoundException();
         }
-        return auctionList;
+        for (Auction auction: auctions ){
+
+            auctionDTOS.add(auctionMapper.mapToDTO(auction, itemService.getItem(auction.getId())));
+        }
+        return auctionDTOS;
     }
 
     @Transactional
     public Auction updateAuction(
             Long id,
             String ownerEmail,
-            Long itemId,
+            String itemId,
             LocalDate endDate,
             BigDecimal price
     ) throws AuctionNotFoundException {
