@@ -52,7 +52,7 @@ public class AuctionService {
         //Page operation is done due to site not starting at page 0
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Auction> auctions = auctionRepository.findAllByPriceDescending(pageable).orElseThrow(AuctionNotFoundException::new);
-        return  convertToDTOS(auctions);
+        return  convertToDTOS(auctions, auctionRepository.count());
 
     }
 
@@ -60,10 +60,10 @@ public class AuctionService {
         //Page operation is done due to site not starting at page 0
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Auction> auctions = auctionRepository.findAllByPriceAscending(pageable).orElseThrow(AuctionNotFoundException::new);
-        return  convertToDTOS(auctions);
+        return  convertToDTOS(auctions, auctionRepository.count());
     }
 
-    private List<AuctionDTO> convertToDTOS(Page<Auction> auctions) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+    private List<AuctionDTO> convertToDTOS(Page<Auction> auctions, long totalItems) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         List<Auction> auctionList = auctions.stream().toList();
         List<AuctionDTO> auctionDTOS = new ArrayList<>();
         if (auctionList.size() == 0) {
@@ -71,7 +71,7 @@ public class AuctionService {
         }
         for (Auction auction: auctions ){
 
-            auctionDTOS.add(auctionMapper.mapToDTO(auction, itemService.getItem(auction.getId())));
+            auctionDTOS.add(auctionMapper.mapToDTO(auction, itemService.getItem(auction.getId()), totalItems));
         }
         return auctionDTOS;
     }

@@ -19,5 +19,6 @@ public class AuctionDTO {
     private LocalDate endDate;
     private BigDecimal price;
     private ItemDTO item;
+    private long totalItems;
 
 }
