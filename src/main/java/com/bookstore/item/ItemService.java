@@ -1,15 +1,12 @@
 package com.bookstore.item;
 
-import com.bookstore.item.book.Book;
-import com.bookstore.item.book.BookMapper;
-import com.bookstore.item.book.BookService;
-import com.bookstore.item.book.BookNotFoundException;
+import com.bookstore.item.book.*;
+import com.bookstore.item.book.author.AuthorRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +16,9 @@ public class ItemService {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     private final BookMapper bookMapper = new BookMapper();
 
@@ -55,5 +55,17 @@ public class ItemService {
 
     public List<Item> getItems(long quantity){
         return itemRepository.findAll().stream().limit(quantity).collect(Collectors.toList());
+    }
+
+    public Set<String> getAllCurrentCategories() throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+        Set<String> categories = new HashSet<>();
+        List<Item> items = itemRepository.findAll();
+        for (Item item: items) {
+            ItemDTO itemDTO = getItem(item.getID());
+            if(itemDTO instanceof BookDTO){
+            //    categories.add(((BookDTO) itemDTO).getCategories());
+            }
+
+        } return categories;
     }
 }

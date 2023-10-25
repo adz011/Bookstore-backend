@@ -9,10 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
 @RequestMapping("/api/v1/items")
+@CrossOrigin("http://localhost:4200")
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -39,6 +41,11 @@ public class ItemController {
     public ResponseEntity<Void> deleteItem(@PathVariable("id") long id){
         itemService.deleteItem(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/books")
+    public ResponseEntity<Set<String>> getCategories() throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+        return ResponseEntity.ok(itemService.getAllCurrentCategories());
     }
 
     @GetMapping()
