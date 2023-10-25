@@ -4,11 +4,12 @@ import com.bookstore.item.ItemDTO;
 import com.bookstore.item.ItemNotFoundException;
 import com.bookstore.item.ItemService;
 import com.bookstore.item.ItemType;
+import com.bookstore.item.book.BookDTO;
 import com.bookstore.item.book.BookNotFoundException;
+import com.bookstore.item.book.BookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,9 @@ public class AuctionService {
 
     private final ItemService itemService;
 
+    @Autowired
+    private final BookRepository bookRepository;
+
     public void createAuction(Auction auction) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         auctionRepository.save(auction);
         itemService.createItem(new ItemDTO(auction.getItemId(), ItemType.Book));
@@ -48,30 +52,61 @@ public class AuctionService {
         return auctionRepository.findAuctionById(id).orElseThrow(AuctionNotFoundException::new);
     }
 
-    public List<AuctionDTO> getAuctionsSortedPriceDescending(int page, int pageSize) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-        //Page operation is done due to site not starting at page 0
+
+    public AuctionsData getAuctions(int page, int pageSize, String category, String sort) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+
         Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Auction> auctions = auctionRepository.findAllByPriceDescending(pageable).orElseThrow(AuctionNotFoundException::new);
-        return  convertToDTOS(auctions, auctionRepository.count());
+        List<Auction> auctions = auctionRepository.findAll();
+        List<AuctionDTO> auctionDTOS = convertToDTOS(auctions);
+        if (category.equals("undefined")) {
+            if (sort.equals("descending")) {
+                return new AuctionsData(convertToDTOS(auctionRepository.findAllByPriceDescending(pageable).stream().toList()), auctions.size());
+
+            } else if (sort.equals("ascending")) {
+                return new AuctionsData(convertToDTOS(auctionRepository.findAllByPriceAscending(pageable).stream().toList()), auctions.size());
+
+            } else {
+                return new AuctionsData(auctionDTOS, auctions.size());
+            }
+
+        } else {
+            if (sort.equals("descending")) {
+                return new AuctionsData(convertToDTOS(auctionRepository.findByCategoryDescending(pageable, category).stream().toList()), auctionRepository.findAllByCategory(category).size());
+
+            } else if (sort.equals("ascending")) {
+                return new AuctionsData(convertToDTOS(auctionRepository.findByCategoryAscending(pageable, category).stream().toList()), auctionRepository.findAllByCategory(category).size());
+
+            } else {
+                auctions = auctionRepository.findAllByCategory(category);
+                return new AuctionsData(convertToDTOS(auctions), auctions.size());
+            }
+
+        }
+
 
     }
 
-    public List<AuctionDTO> getAuctionsSortedPriceAscending(int page, int pageSize) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-        //Page operation is done due to site not starting at page 0
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<Auction> auctions = auctionRepository.findAllByPriceAscending(pageable).orElseThrow(AuctionNotFoundException::new);
-        return  convertToDTOS(auctions, auctionRepository.count());
+    private List<AuctionDTO> searchByCategory(List<AuctionDTO> auctionDTOS, String category) {
+        for (AuctionDTO auctionDTO : auctionDTOS) {
+            //TODO fix if items are of other type than book
+            if (auctionDTO.getItem() instanceof BookDTO) {
+                if (!((BookDTO) auctionDTO.getItem()).getCategories().equals(category)) {
+                    auctionDTOS.remove(auctionDTO);
+                }
+            }
+        }
+        return auctionDTOS;
     }
 
-    private List<AuctionDTO> convertToDTOS(Page<Auction> auctions, long totalItems) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-        List<Auction> auctionList = auctions.stream().toList();
+
+    private List<AuctionDTO> convertToDTOS(List<Auction> auctions) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
         List<AuctionDTO> auctionDTOS = new ArrayList<>();
-        if (auctionList.size() == 0) {
+        if (auctions.size() == 0) {
             throw new AuctionNotFoundException();
         }
-        for (Auction auction: auctions ){
+        for (Auction auction : auctions) {
 
-            auctionDTOS.add(auctionMapper.mapToDTO(auction, itemService.getItem(auction.getId()), totalItems));
+            auctionDTOS.add(auctionMapper.mapToDTO(auction, itemService.getItem(auction.getId())));
         }
         return auctionDTOS;
     }
@@ -105,4 +140,6 @@ public class AuctionService {
         auctionRepository.delete(auction);
         return auction;
     }
+
+
 }

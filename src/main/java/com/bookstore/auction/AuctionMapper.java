@@ -4,7 +4,7 @@ import com.bookstore.item.ItemDTO;
 
 public class AuctionMapper {
 
-    public AuctionDTO mapToDTO(Auction auction, ItemDTO itemDTO, long totalItems) {
+    public AuctionDTO mapToDTO(Auction auction, ItemDTO itemDTO) {
         return new AuctionDTO(
                 auction.getId(),
                 auction.getOwnerEmail(),
@@ -12,8 +12,7 @@ public class AuctionMapper {
                 auction.getStartDate(),
                 auction.getEndDate(),
                 auction.getPrice(),
-                itemDTO,
-                totalItems
+                itemDTO
         ) {
         };
     }

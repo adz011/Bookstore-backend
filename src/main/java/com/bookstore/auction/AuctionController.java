@@ -28,11 +28,6 @@ public class AuctionController {
         return ResponseEntity.ok("Auction was created successfully");
     }
 
-    @GetMapping
-    public ResponseEntity<List<Auction>> getAllAuctions() throws AuctionNotFoundException {
-        return ResponseEntity.ok(auctionService.getAllAuctions());
-    }
-
     @GetMapping(params = "id")
     public ResponseEntity<Auction> getById(
             @RequestParam Long id
@@ -40,20 +35,14 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getById(id));
     }
 
-    @GetMapping(path = "/price/descending", params = {"page", "pageSize"})
-    public ResponseEntity<List<AuctionDTO>> getSortedPriceDescending(
-            @RequestParam("page") int page,
-            @RequestParam("pageSize") int pageSize
+    @GetMapping(path = "/pageable")
+    public ResponseEntity<AuctionsData> getAuctions(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "12") int pageSize,
+            @RequestParam(defaultValue = "undefined") String category,
+            @RequestParam(defaultValue = "undefined") String sort
     ) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-        return ResponseEntity.ok(auctionService.getAuctionsSortedPriceDescending(page, pageSize));
-    }
-
-    @GetMapping(path = "/price/ascending", params = {"page", "pageSize"})
-    public ResponseEntity<List<AuctionDTO>> getSortedPriceAscending(
-            @RequestParam("page") int page,
-            @RequestParam("pageSize") int pageSize
-    ) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-        return ResponseEntity.ok(auctionService.getAuctionsSortedPriceAscending(page, pageSize));
+        return ResponseEntity.ok(auctionService.getAuctions(page, pageSize, category, sort));
     }
 
 
@@ -76,4 +65,6 @@ public class AuctionController {
         auctionService.deleteAuction(id);
         return ResponseEntity.ok("Auction with id " + id + " was deleted successfully");
     }
+
+
 }

@@ -1,31 +1,51 @@
 package com.bookstore.item.book;
 
+import com.bookstore.item.book.author.Author;
+import com.bookstore.item.book.author.AuthorListDeserializer;
+import com.bookstore.item.book.category.Category;
+import com.bookstore.item.book.category.CategoryListDeserializer;
+import com.bookstore.item.book.imageLink.ImageLinks;
+import com.bookstore.item.book.imageLink.ImageLinkDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Map;
 
 
 @Getter
 @Setter
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Table
 public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
     private String title;
-    private List<String> authors;
+    private String ISBN;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    @JsonDeserialize(using = AuthorListDeserializer.class)
+    private List<Author> authors;
     private String publisher;
     private String publishedDate;
+    @Column(length = 4000)
     private String description;
-    private List<IndustryIdentifier> industryIdentifiers;
-    private Map<String, Boolean> readingModes;
     private int pageCount;
     private String printType;
-    private List<String> categories;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+    @JsonDeserialize(using = CategoryListDeserializer.class)
+    private List<Category> categories;
     private String maturityRating;
     private boolean allowAnonLogging;
     private String contentVersion;
-    private PanelizationSummary panelizationSummary;
+    @JsonDeserialize(using = ImageLinkDeserializer.class)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book")
     private ImageLinks imageLinks;
     private String language;
     private String previewLink;
@@ -33,27 +53,4 @@ public class Book {
     private String canonicalVolumeLink;
 
 
-    @NoArgsConstructor
-    @Getter
-    @Setter
-    public static class IndustryIdentifier {
-        private String type;
-        private String identifier;
-
-
-    }
-    @NoArgsConstructor
-    @Getter
-    @Setter
-    public static class PanelizationSummary {
-        private boolean containsEpubBubbles;
-        private boolean containsImageBubbles;
-
-        // Getter and setter methods for containsEpubBubbles and containsImageBubbles
-
-        // ...
-    }
-    public Book() {
-
-    }
 }

@@ -13,7 +13,7 @@ public class BookMapper {
                 book.getPublishedDate(),
                 book.getDescription(),
                 book.getPageCount(),
-                book.getCategories().get(0),
+                book.getCategories(),
                 book.getLanguage(),
                 book.getImageLinks()
         );
