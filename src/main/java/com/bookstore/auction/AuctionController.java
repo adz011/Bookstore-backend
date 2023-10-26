@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/auctions")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin()
 public class AuctionController {
     @Autowired
     private final AuctionService auctionService;

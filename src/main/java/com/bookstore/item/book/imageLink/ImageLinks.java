@@ -1,7 +1,9 @@
 package com.bookstore.item.book.imageLink;
 
-import com.bookstore.item.book.Book;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +14,9 @@ import lombok.Setter;
 @Entity
 @Table
 public class ImageLinks {
-    @OneToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
     @Id
+    @GeneratedValue
+    private long Id;
     private String smallThumbnail;
     private String thumbnail;
 

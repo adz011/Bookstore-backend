@@ -2,6 +2,8 @@ package com.bookstore.item;
 
 import com.bookstore.item.book.*;
 import com.bookstore.item.book.author.AuthorRepository;
+import com.bookstore.item.book.category.Category;
+import com.bookstore.item.book.category.CategoryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,7 @@ public class ItemService {
     private BookService bookService;
 
     @Autowired
-    private AuthorRepository authorRepository;
+    private CategoryRepository categoryRepository;
 
     private final BookMapper bookMapper = new BookMapper();
 
@@ -53,19 +55,16 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public List<Item> getItems(long quantity){
+    public List<Item> getItems(long quantity) {
         return itemRepository.findAll().stream().limit(quantity).collect(Collectors.toList());
     }
 
-    public Set<String> getAllCurrentCategories() throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+    public Set<String> getAllCurrentCategories() {
+        List<Category> categoriesData = categoryRepository.findAll();
         Set<String> categories = new HashSet<>();
-        List<Item> items = itemRepository.findAll();
-        for (Item item: items) {
-            ItemDTO itemDTO = getItem(item.getID());
-            if(itemDTO instanceof BookDTO){
-            //    categories.add(((BookDTO) itemDTO).getCategories());
-            }
-
-        } return categories;
+        for (Category category : categoriesData) {
+            categories.add(category.getCategory());
+        }
+        return categories;
     }
 }

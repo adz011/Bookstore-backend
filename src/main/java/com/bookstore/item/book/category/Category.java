@@ -1,8 +1,9 @@
 package com.bookstore.item.book.category;
 
-import com.bookstore.item.book.Book;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +16,7 @@ import lombok.Setter;
 
 public class Category {
     @Id
+    @GeneratedValue
+    private long Id;
     private String category;
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
 }

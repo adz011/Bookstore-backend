@@ -1,7 +1,9 @@
 package com.bookstore.item.book.author;
 
-import com.bookstore.item.book.Book;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +14,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Author {
-
     @Id
+    @GeneratedValue
+    private long Id;
     private String author;
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
-
 
 }

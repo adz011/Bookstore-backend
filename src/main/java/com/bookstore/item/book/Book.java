@@ -29,7 +29,7 @@ public class Book {
     private long id;
     private String title;
     private String ISBN;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonDeserialize(using = AuthorListDeserializer.class)
     private List<Author> authors;
     private String publisher;
@@ -38,14 +38,14 @@ public class Book {
     private String description;
     private int pageCount;
     private String printType;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonDeserialize(using = CategoryListDeserializer.class)
     private List<Category> categories;
     private String maturityRating;
     private boolean allowAnonLogging;
     private String contentVersion;
     @JsonDeserialize(using = ImageLinkDeserializer.class)
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "book")
+    @OneToOne(cascade = CascadeType.ALL)
     private ImageLinks imageLinks;
     private String language;
     private String previewLink;
