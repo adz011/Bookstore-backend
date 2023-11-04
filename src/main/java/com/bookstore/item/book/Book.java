@@ -9,6 +9,7 @@ import com.bookstore.item.book.imageLink.ImageLinkDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,7 +23,7 @@ import java.util.Set;
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-
+@Builder
 public class Book {
 
     @Id
