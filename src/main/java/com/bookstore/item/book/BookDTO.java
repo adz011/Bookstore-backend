@@ -7,7 +7,7 @@ import com.bookstore.item.book.category.Category;
 import com.bookstore.item.book.imageLink.ImageLinks;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,17 +18,17 @@ public class BookDTO extends ItemDTO {
 
     String title;
     String publisher;
-    List<Author> authors;
+    Set<Author> authors;
     String publishedDate;
     String description;
     int pageCount;
-    List<Category> categories;
+    Set<Category> categories;
     ImageLinks imageLinks;
     String language;
 
-    public BookDTO(String itemID, ItemType itemType, String title, String publisher, List<Author> authors,
+    public BookDTO(String itemID, ItemType itemType, String title, String publisher, Set<Author> authors,
                    String publishedDate, String description, int pageCount,
-                   List<Category> categories, String language, ImageLinks imageLinks) {
+                   Set<Category> categories, String language, ImageLinks imageLinks) {
 
         super.setItemID(itemID);
         super.setItemType(itemType);

@@ -1,22 +1,24 @@
 package com.bookstore.item.book.category;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.bookstore.item.book.Book;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
 
 public class Category {
     @Id
     @GeneratedValue
     private long Id;
+    @ManyToMany(mappedBy = "categories")
+    private Set<Book> book;
     private String category;
+
 }

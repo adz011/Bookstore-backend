@@ -1,22 +1,25 @@
 package com.bookstore.item.book.author;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.bookstore.item.book.Book;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
-@Table
 @Getter
 @Setter
 @NoArgsConstructor
+
 public class Author {
     @Id
     @GeneratedValue
     private long Id;
     private String author;
-
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> book;
 }
+
+

@@ -36,6 +36,8 @@ public class AuctionService {
     private final BookRepository bookRepository;
 
     public void createAuction(Auction auction) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+        auction.setStartDate(LocalDate.now());
+        auction.setEndDate(LocalDate.from(LocalDate.now().plusDays(7)));
         auctionRepository.save(auction);
         itemService.createItem(new ItemDTO(auction.getItemId(), ItemType.Book));
     }
@@ -80,10 +82,7 @@ public class AuctionService {
                 auctions = auctionRepository.findAllByCategory(category);
                 return new AuctionsData(convertToDTOS(auctions), auctions.size());
             }
-
         }
-
-
     }
 
     private List<AuctionDTO> searchByCategory(List<AuctionDTO> auctionDTOS, String category) {

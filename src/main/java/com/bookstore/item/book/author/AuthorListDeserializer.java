@@ -10,20 +10,20 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Setter
-public class AuthorListDeserializer extends JsonDeserializer<List<Author>> {
+public class AuthorListDeserializer extends JsonDeserializer<Set<Author>> {
 
 
     @Override
-    public List<Author> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public Set<Author> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         JsonNode node = mapper.readTree(jsonParser);
 
-        List<Author> authorEntities = new ArrayList<>();
+        Set<Author> authorEntities = new HashSet<>();
         for (JsonNode authorNode : node) {
             Author author = new Author();
             author.setAuthor(authorNode.asText());

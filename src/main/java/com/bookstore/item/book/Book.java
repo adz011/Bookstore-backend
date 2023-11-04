@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -21,7 +22,7 @@ import java.util.List;
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table
+
 public class Book {
 
     @Id
@@ -29,23 +30,33 @@ public class Book {
     private long id;
     private String title;
     private String ISBN;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
     @JsonDeserialize(using = AuthorListDeserializer.class)
-    private List<Author> authors;
+    private Set<Author> authors;
     private String publisher;
     private String publishedDate;
     @Column(length = 4000)
     private String description;
     private int pageCount;
     private String printType;
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "book_category",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
     @JsonDeserialize(using = CategoryListDeserializer.class)
-    private List<Category> categories;
+    private Set<Category> categories;
     private String maturityRating;
     private boolean allowAnonLogging;
     private String contentVersion;
     @JsonDeserialize(using = ImageLinkDeserializer.class)
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private ImageLinks imageLinks;
     private String language;
     private String previewLink;

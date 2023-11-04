@@ -45,7 +45,6 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAuctions(page, pageSize, category, sort));
     }
 
-
     @PutMapping
     public ResponseEntity<String> updateAuction(
             @RequestParam Long id,
@@ -65,6 +64,4 @@ public class AuctionController {
         auctionService.deleteAuction(id);
         return ResponseEntity.ok("Auction with id " + id + " was deleted successfully");
     }
-
-
 }
