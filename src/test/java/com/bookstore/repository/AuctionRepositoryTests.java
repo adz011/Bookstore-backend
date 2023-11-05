@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,12 +32,12 @@ public class AuctionRepositoryTests {
         Auction savedAuction = auctionRepository.save(auction);
 
         Assertions.assertNotNull(savedAuction);
-        Assertions.assertTrue(savedAuction.getId()>=0);
+        Assertions.assertTrue(savedAuction.getId() >= 0);
     }
 
 
     @Test
-    public void AuctionRepository_FindAll_ReturnsMoreThanOneAuction(){
+    public void AuctionRepository_FindAll_ReturnsMoreThanOneAuction() {
         Auction auction1 = Auction.builder()
                 .ownerEmail("abc123@a.a")
                 .itemId("9780470383278")
@@ -52,12 +54,12 @@ public class AuctionRepositoryTests {
         List<Auction> auctionList = auctionRepository.findAll();
 
         Assertions.assertNotNull(auctionList);
-        Assertions.assertTrue(auctionList.size()>1);
+        Assertions.assertTrue(auctionList.size() > 1);
     }
 
 
     @Test
-    public void AuctionRepository_FindById_ReturnsNotNull(){
+    public void AuctionRepository_FindById_ReturnsNotNull() {
         Auction auction = Auction.builder()
                 .ownerEmail("abc123@a.a")
                 .itemId("9780470383278")
@@ -72,7 +74,7 @@ public class AuctionRepositoryTests {
 
 
     @Test
-    public void AuctionRepository_DeleteAuction_ReturnsEmpty(){
+    public void AuctionRepository_DeleteAuction_ReturnsEmpty() {
         Auction auction = Auction.builder()
                 .ownerEmail("abc123@a.a")
                 .itemId("9780470383278")
@@ -84,5 +86,132 @@ public class AuctionRepositoryTests {
         Optional<Auction> retrievedAuction = auctionRepository.findAuctionById(auction.getId());
 
         Assertions.assertTrue(retrievedAuction.isEmpty());
+    }
+
+    @Test
+    public void AuctionRepository_FindAll_ReturnByPriceDescending() {
+        Auction auction1 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780470383278")
+                .price(new BigDecimal("10.00")).build();
+
+        Auction auction2 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780201715941")
+                .price(new BigDecimal("30.00")).build();
+
+        Auction auction3 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9781794880016")
+                .price(new BigDecimal("20.00")).build();
+
+        auctionRepository.save(auction1);
+        auctionRepository.save(auction2);
+        auctionRepository.save(auction3);
+
+        List<Auction> auctionList = auctionRepository.findAllByPriceAscending(PageRequest.of(0, 3)).stream().toList();
+
+        for (int i = 1; i < auctionList.size(); i++) {
+            Assertions.assertTrue(auctionList.get(i).getPrice().compareTo(auctionList.get(i - 1).getPrice()) >= 0);
+        }
+    }
+
+    @Test
+    public void AuctionRepository_FindAll_ReturnByPriceAscending() {
+        Auction auction1 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780470383278")
+                .price(new BigDecimal("10.00")).build();
+
+        Auction auction2 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780201715941")
+                .price(new BigDecimal("30.00")).build();
+
+        Auction auction3 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9781794880016")
+                .price(new BigDecimal("20.00")).build();
+
+        auctionRepository.save(auction1);
+        auctionRepository.save(auction2);
+        auctionRepository.save(auction3);
+
+        List<Auction> auctionList = auctionRepository.findAllByPriceDescending(PageRequest.of(0, 3)).stream().toList();
+
+        for (int i = 1; i < auctionList.size(); i++) {
+            Assertions.assertTrue(auctionList.get(i).getPrice().compareTo(auctionList.get(i - 1).getPrice()) <= 0);
+        }
+    }
+
+    @Test
+    public void AuctionRepository_FindAllByCategory_ReturnByPriceDescending() {
+        Auction auction1 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780470383278")
+                .price(new BigDecimal("10.00")).build();
+
+        Auction auction2 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9781000094657")
+                .price(new BigDecimal("30.00")).build();
+
+        Auction auction3 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780123810281")
+                .price(new BigDecimal("20.00")).build();
+
+        auctionRepository.save(auction1);
+        auctionRepository.save(auction2);
+        auctionRepository.save(auction3);
+
+        List<Auction> auctionList = auctionRepository.findByCategoryDescending(PageRequest.of(0, 3), "Computers").stream().toList();
+
+        for (int i = 1; i < auctionList.size(); i++) {
+            Assertions.assertTrue(auctionList.get(i).getPrice().compareTo(auctionList.get(i - 1).getPrice()) >= 0);
+        }
+    }
+
+    @Test
+    public void AuctionRepository_FindAllByCategory_ReturnByPriceAscending() {
+        Auction auction1 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780470383278")
+                .price(new BigDecimal("10.00")).build();
+
+        Auction auction2 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9781000094657")
+                .price(new BigDecimal("30.00")).build();
+
+        Auction auction3 = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780123810281")
+                .price(new BigDecimal("20.00")).build();
+
+        auctionRepository.save(auction1);
+        auctionRepository.save(auction2);
+        auctionRepository.save(auction3);
+
+        List<Auction> auctionList = auctionRepository.findByCategoryAscending(PageRequest.of(0, 3), "Computers").stream().toList();
+
+        for (int i = 1; i < auctionList.size(); i++) {
+            Assertions.assertTrue(auctionList.get(i).getPrice().compareTo(auctionList.get(i - 1).getPrice()) >= 0);
+        }
+            Assertions.assertEquals(3, auctionList.size());
+    }
+
+    @Test
+    public void AuctionRepository_FindAllByCategory_ReturnNotNull() {
+        Auction auction = Auction.builder()
+                .ownerEmail("abc123@a.a")
+                .itemId("9780470383278")
+                .price(new BigDecimal("10.00")).build();
+
+        auctionRepository.save(auction);
+
+        List<Auction> auctionList = auctionRepository.findAllByCategory("Computers");
+
+        Assertions.assertEquals(1, auctionList.size());
     }
 }

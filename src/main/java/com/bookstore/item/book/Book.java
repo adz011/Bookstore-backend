@@ -4,17 +4,13 @@ import com.bookstore.item.book.author.Author;
 import com.bookstore.item.book.author.AuthorListDeserializer;
 import com.bookstore.item.book.category.Category;
 import com.bookstore.item.book.category.CategoryListDeserializer;
-import com.bookstore.item.book.imageLink.ImageLinks;
 import com.bookstore.item.book.imageLink.ImageLinkDeserializer;
+import com.bookstore.item.book.imageLink.ImageLinks;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -24,6 +20,8 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
 
     @Id
