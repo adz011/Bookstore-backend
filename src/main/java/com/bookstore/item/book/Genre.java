@@ -1,4 +1,4 @@
-package com.bookstore.book;
+package com.bookstore.item.book;
 
 public enum Genre {
     //TODO change to real values
