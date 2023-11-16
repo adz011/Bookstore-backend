@@ -4,7 +4,7 @@ public class ItemMapper {
 
     public ItemDTO mapToItemDTO(Item item) {
         return new ItemDTO(
-                item.getItemID(),
+                item.getItem_id(),
                 item.getType()
         );
     }

@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/auctions")
 @RequiredArgsConstructor
-@CrossOrigin()
+@CrossOrigin("http://localhost:4200")
 public class AuctionController {
     @Autowired
     private final AuctionService auctionService;

@@ -31,7 +31,7 @@ public class ItemService {
         Item item = itemRepository.findByID(id).orElseThrow(ItemNotFoundException::new);
         ItemDTO itemDTO = itemMapper.mapToItemDTO(item);
         if (item.getType() == ItemType.Book) {
-            Book book = bookService.getBookByISBN(item.getItemID());
+            Book book = bookService.getBookByISBN(item.getItem_id());
             System.out.println(bookMapper.mapToDTO(itemDTO, book));
             itemDTO = bookMapper.mapToDTO(itemDTO, book);
         }

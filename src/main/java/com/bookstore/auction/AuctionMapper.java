@@ -7,10 +7,10 @@ public class AuctionMapper {
     public AuctionDTO mapToDTO(Auction auction, ItemDTO itemDTO) {
         return new AuctionDTO(
                 auction.getId(),
-                auction.getOwnerEmail(),
-                auction.getItemId(),
-                auction.getStartDate(),
-                auction.getEndDate(),
+                auction.getOwner_email(),
+                auction.getItem_id(),
+                auction.getStart_date(),
+                auction.getEnd_date(),
                 auction.getPrice(),
                 itemDTO
         ) {

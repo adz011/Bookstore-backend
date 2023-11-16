@@ -21,13 +21,13 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     @Query("SELECT a FROM Auction a ORDER BY a.price ASC")
     Page<Auction> findAllByPriceAscending(Pageable pageable);
 
-    @Query("SELECT a FROM Auction a JOIN Book b JOIN b.categories c WHERE b.ISBN = a.itemId AND c.category = :category  ORDER BY a.price ASC")
+    @Query("SELECT a FROM Auction a JOIN Book b JOIN b.categories c WHERE b.ISBN = a.item_id AND c.category = :category  ORDER BY a.price ASC")
     Page<Auction> findByCategoryAscending(Pageable pageable, @Param("category") String category);
 
-    @Query("SELECT a FROM Auction a JOIN Book b JOIN b.categories c WHERE b.ISBN = a.itemId AND c.category = :category  ORDER BY a.price DESC")
+    @Query("SELECT a FROM Auction a JOIN Book b JOIN b.categories c WHERE b.ISBN = a.item_id AND c.category = :category  ORDER BY a.price DESC")
     Page<Auction> findByCategoryDescending(Pageable pageable, @Param("category") String category);
 
-    @Query("SELECT a FROM Auction a JOIN Book b JOIN b.categories c WHERE b.ISBN = a.itemId AND c.category = :category")
+    @Query("SELECT a FROM Auction a JOIN Book b JOIN b.categories c WHERE b.ISBN = a.item_id AND c.category = :category")
     List<Auction> findAllByCategory(@Param("category") String category);
 
 }

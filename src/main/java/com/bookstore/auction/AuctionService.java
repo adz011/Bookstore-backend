@@ -35,11 +35,21 @@ public class AuctionService {
     @Autowired
     private final BookRepository bookRepository;
 
+    private boolean hasInit = false;
+
+
+    public void init() throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
+        List<Auction> auctionList = auctionRepository.findAll();
+        for (Auction auction: auctionList) {
+            itemService.createItem(new ItemDTO(auction.getItem_id(), ItemType.Book));
+        }
+    }
+
     public void createAuction(Auction auction) throws BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-        auction.setStartDate(LocalDate.now());
-        auction.setEndDate(LocalDate.from(LocalDate.now().plusDays(7)));
+        auction.setStart_date(LocalDate.now());
+        auction.setEnd_date(LocalDate.from(LocalDate.now().plusDays(7)));
         auctionRepository.save(auction);
-        itemService.createItem(new ItemDTO(auction.getItemId(), ItemType.Book));
+        itemService.createItem(new ItemDTO(auction.getItem_id(), ItemType.Book));
     }
 
     public List<Auction> getAllAuctions() throws AuctionNotFoundException {
@@ -56,7 +66,10 @@ public class AuctionService {
 
 
     public AuctionsData getAuctions(int page, int pageSize, String category, String sort) throws AuctionNotFoundException, BookNotFoundException, JsonProcessingException, ItemNotFoundException {
-
+        if(!hasInit){
+            init();
+            hasInit = true;
+        }
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         List<Auction> auctions = auctionRepository.findAll();
         List<AuctionDTO> auctionDTOS = convertToDTOS(auctions);
@@ -120,13 +133,13 @@ public class AuctionService {
     ) throws AuctionNotFoundException {
         Auction optionalAuction = auctionRepository.findAuctionById(id).orElseThrow(AuctionNotFoundException::new);
         if (ownerEmail != null) {
-            optionalAuction.setOwnerEmail(ownerEmail);
+            optionalAuction.setOwner_email(ownerEmail);
         }
         if (itemId != null) {
-            optionalAuction.setItemId(itemId);
+            optionalAuction.setItem_id(itemId);
         }
         if (endDate != null && endDate.isAfter(LocalDate.now())) {
-            optionalAuction.setEndDate(endDate);
+            optionalAuction.setEnd_date(endDate);
         }
         if (price != null && price.floatValue() > 0) {
             optionalAuction.setPrice(price);

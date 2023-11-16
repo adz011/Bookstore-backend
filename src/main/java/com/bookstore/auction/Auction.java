@@ -13,18 +13,18 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "AUCTIONS")
 public class Auction {
     @Id
     @GeneratedValue
     private Long id;
-    private String ownerEmail;
-    private String itemId;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String owner_email;
+    private String item_id;
+    private LocalDate start_date;
+    private LocalDate end_date;
     private BigDecimal price;
 }
