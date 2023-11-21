@@ -23,7 +23,7 @@ public class ItemRepositoryTests {
     @Test
     public void ItemRepository_SaveAll_ReturnSavedItem() {
         Item item = Item.builder()
-                .itemID("9780470383278")
+                .item_id("9780470383278")
                 .type(ItemType.Book)
                 .build();
 
@@ -37,12 +37,12 @@ public class ItemRepositoryTests {
     @Test
     public void ItemRepository_FindAll_ReturnsMoreThanOneItem(){
         Item item1 = Item.builder()
-                .itemID("9780470383278")
+                .item_id("9780470383278")
                 .type(ItemType.Book)
                 .build();
 
         Item item2 = Item.builder()
-                .itemID("9780201715941")
+                .item_id("9780201715941")
                 .type(ItemType.Book)
                 .build();
 
@@ -59,7 +59,7 @@ public class ItemRepositoryTests {
     @Test
     public void ItemRepository_FindById_ReturnsNotNull(){
         Item item = Item.builder()
-                .itemID("9780470383278")
+                .item_id("9780470383278")
                 .type(ItemType.Book)
                 .build();
 
@@ -74,7 +74,7 @@ public class ItemRepositoryTests {
     @Test
     public void ItemRepository_DeleteItem_ReturnsEmpty(){
         Item item = Item.builder()
-                .itemID("9780470383278")
+                .item_id("9780470383278")
                 .type(ItemType.Book)
                 .build();
 

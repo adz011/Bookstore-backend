@@ -9,7 +9,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,8 +24,8 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_SaveAll_ReturnSavedAuction() {
         Auction auction = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         Auction savedAuction = auctionRepository.save(auction);
@@ -39,13 +38,13 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_FindAll_ReturnsMoreThanOneAuction() {
         Auction auction1 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         Auction auction2 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("20.00")).build();
 
         auctionRepository.save(auction1);
@@ -61,8 +60,8 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_FindById_ReturnsNotNull() {
         Auction auction = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         auctionRepository.save(auction);
@@ -76,8 +75,8 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_DeleteAuction_ReturnsEmpty() {
         Auction auction = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         auctionRepository.save(auction);
@@ -91,18 +90,18 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_FindAll_ReturnByPriceDescending() {
         Auction auction1 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         Auction auction2 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780201715941")
+                .owner_email("abc123@a.a")
+                .item_id("9780201715941")
                 .price(new BigDecimal("30.00")).build();
 
         Auction auction3 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9781794880016")
+                .owner_email("abc123@a.a")
+                .item_id("9781794880016")
                 .price(new BigDecimal("20.00")).build();
 
         auctionRepository.save(auction1);
@@ -119,18 +118,18 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_FindAll_ReturnByPriceAscending() {
         Auction auction1 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         Auction auction2 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780201715941")
+                .owner_email("abc123@a.a")
+                .item_id("9780201715941")
                 .price(new BigDecimal("30.00")).build();
 
         Auction auction3 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9781794880016")
+                .owner_email("abc123@a.a")
+                .item_id("9781794880016")
                 .price(new BigDecimal("20.00")).build();
 
         auctionRepository.save(auction1);
@@ -147,18 +146,18 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_FindAllByCategory_ReturnByPriceDescending() {
         Auction auction1 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         Auction auction2 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9781000094657")
+                .owner_email("abc123@a.a")
+                .item_id("9781000094657")
                 .price(new BigDecimal("30.00")).build();
 
         Auction auction3 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780123810281")
+                .owner_email("abc123@a.a")
+                .item_id("9780123810281")
                 .price(new BigDecimal("20.00")).build();
 
         auctionRepository.save(auction1);
@@ -175,18 +174,18 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_FindAllByCategory_ReturnByPriceAscending() {
         Auction auction1 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         Auction auction2 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9781000094657")
+                .owner_email("abc123@a.a")
+                .item_id("9781000094657")
                 .price(new BigDecimal("30.00")).build();
 
         Auction auction3 = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780123810281")
+                .owner_email("abc123@a.a")
+                .item_id("9780123810281")
                 .price(new BigDecimal("20.00")).build();
 
         auctionRepository.save(auction1);
@@ -204,8 +203,8 @@ public class AuctionRepositoryTests {
     @Test
     public void AuctionRepository_FindAllByCategory_ReturnNotNull() {
         Auction auction = Auction.builder()
-                .ownerEmail("abc123@a.a")
-                .itemId("9780470383278")
+                .owner_email("abc123@a.a")
+                .item_id("9780470383278")
                 .price(new BigDecimal("10.00")).build();
 
         auctionRepository.save(auction);
