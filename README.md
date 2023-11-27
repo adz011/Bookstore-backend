@@ -3,12 +3,12 @@
 This repository contains a half of the whole project, so in order to run the project fully, please follow the instructions below, and then proceed to https://github.com/adz011/Bookstore-frontend.
 
 ## About Project
-This project emits a real-world bookstore application, where each user can create an account, buy and sell books.
+This project imitate a real-world bookstore application, where each user can create an account, buy and sell books.
 Each books' data is retrieved from Google Books Api, so that it guarantees its validity, and provides useful information automatically, such as images, descriptions and categories. 
 Hence user only needs to provide ISBN code in order to find a book they want to sell.
 The payment methods use Stripe Api to help detect and prevent fraudulent transactions.
 It provides a dashboard for businesses to monitor and manage transactions, view financial reports, and gain insights into customer behavior.
-Stripe Api is set to test mode, so no real transaction are being processed!
+Stripe Api is set to test mode, so no real transactions are being processed!
 
 This project serves educational purpose only.
 
@@ -77,7 +77,6 @@ To check that everything works on the backend, go to localhost:8080 in your brow
 
 ### Alternatively use Intellij
 
-As far 
 Open this project in Intellij and go to File -> Project Structure.
 
 If you have already installed SDK 19 or above you can use it, otherwise click on Add SDK -> Download, and choose anything above 19. Click Apply and Ok.
